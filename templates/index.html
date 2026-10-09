@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BibliotecaWeb</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #253247;
+        }
+
+        header {
+            background-color: #17365d;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(210px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .card {
+            display: block;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #00000015;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card h3 {
+            color: #17365d;
+        }
+
+        a.card:hover {
+            background-color: #e8f0fa;
+            transform: translateY(-3px);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>📚 BibliotecaWeb</h1>
+        <p>Sistema de Gerenciamento de Biblioteca</p>
+    </header>
+
+    <main>
+        <h2>Painel da Biblioteca</h2>
+        <p>Bem-vindo ao nosso sistema!</p>
+
+        <div class="cards">
+
+            <a href="{{ url_for('pagina_cadastro') }}"
+               class="card">
+                <h3>📖 Cadastrar Livros</h3>
+                <p>Adicionar novos livros ao catálogo.</p>
+            </a>
+
+            
+<a href="{{ url_for('pagina_consulta') }}"
+   class="card">
+    <h3>🔎 Consultar Livros</h3>
+    <p>Pesquisar os livros cadastrados.</p>
+</a>
+
+
+            
+<a href="{{ url_for('pagina_emprestimos') }}"
+   class="card">
+    <h3>📤 Empréstimos</h3>
+    <p>Registrar empréstimos de livros.</p>
+</a>
+
+
+            
+<a href="{{ url_for('pagina_devolucoes') }}"
+   class="card">
+    <h3>📥 Devoluções</h3>
+    <p>Registrar devoluções de livros.</p>
+</a>
+
+
+        </div>
+
+        <p>Funcionalidades em desenvolvimento.</p>
+    </main>
+</body>
+</html>

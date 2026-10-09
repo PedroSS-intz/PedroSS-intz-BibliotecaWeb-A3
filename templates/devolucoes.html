@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Devoluções - BibliotecaWeb</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #253247;
+        }
+
+        header {
+            background: #17365d;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #00000015;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: #17365d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #28558a;
+        }
+
+        button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .sucesso {
+            color: green;
+            font-weight: bold;
+        }
+
+        .erro {
+            color: #b42318;
+            font-weight: bold;
+        }
+
+        .tabela-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #e8f0fa;
+        }
+
+        a {
+            color: #17365d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>📚 BibliotecaWeb</h1>
+        <p>Controle de Devoluções</p>
+    </header>
+
+    <main>
+        <h2>Registrar devolução</h2>
+
+        {% if sucesso %}
+            <p class="sucesso">
+                Livro devolvido com sucesso!
+            </p>
+        {% endif %}
+
+        {% if erro %}
+            <p class="erro">{{ erro }}</p>
+        {% endif %}
+
+        <form method="POST" novalidate>
+
+            <label for="emprestimo_id">
+                Selecione o empréstimo:
+            </label>
+
+            <select
+                id="emprestimo_id"
+                name="emprestimo_id"
+            >
+                <option value="">
+                    Selecione um empréstimo
+                </option>
+
+                {% for emprestimo in emprestimos %}
+                    <option value="{{ emprestimo['id'] }}">
+                        Nº {{ emprestimo["id"] }} -
+                        {{ emprestimo["titulo"] }} -
+                        {{ emprestimo["nome_leitor"] }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button
+                type="submit"
+                {% if not emprestimos %}disabled{% endif %}
+            >
+                Confirmar Devolução
+            </button>
+
+        </form>
+
+        <h2>Empréstimos pendentes</h2>
+
+        {% if emprestimos %}
+
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Livro</th>
+                            <th>Leitor</th>
+                            <th>Data do empréstimo</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for emprestimo in emprestimos %}
+                        <tr>
+                            <td>{{ emprestimo["id"] }}</td>
+                            <td>{{ emprestimo["titulo"] }}</td>
+                            <td>{{ emprestimo["nome_leitor"] }}</td>
+                            <td>{{ emprestimo["data_emprestimo"] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        {% else %}
+
+            <p>
+                Não existem empréstimos pendentes
+                de devolução.
+            </p>
+
+        {% endif %}
+
+        <p>
+            <a href="/">
+                ← Voltar ao início
+            </a>
+        </p>
+
+    </main>
+
+</body>
+</html>

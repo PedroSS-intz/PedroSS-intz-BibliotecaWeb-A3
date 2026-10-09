@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Empréstimos - BibliotecaWeb</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #253247;
+        }
+
+        header {
+            background: #17365d;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #00000015;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 25px;
+            background: #17365d;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #28558a;
+        }
+
+        .sucesso {
+            color: green;
+            font-weight: bold;
+        }
+
+        .erro {
+            color: #b42318;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #e8f0fa;
+        }
+
+        .tabela-container {
+            overflow-x: auto;
+        }
+
+        a {
+            color: #17365d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>📚 BibliotecaWeb</h1>
+        <p>Controle de Empréstimos</p>
+    </header>
+
+    <main>
+        <h2>Realizar empréstimo</h2>
+
+        {% if sucesso %}
+            <p class="sucesso">
+                Empréstimo realizado com sucesso!
+            </p>
+        {% endif %}
+
+        {% if erro %}
+            <p class="erro">{{ erro }}</p>
+        {% endif %}
+
+        <form method="POST" novalidate>
+
+            <label for="livro_id">
+                Selecione o livro:
+            </label>
+
+            <select id="livro_id" name="livro_id">
+                <option value="">
+                    Selecione um livro
+                </option>
+
+                {% for livro in livros %}
+                    <option
+                        value="{{ livro['id'] }}"
+                        {% if request.form.get('livro_id') == livro['id']|string %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ livro["titulo"] }}
+                        ({{ livro["quantidade_disponivel"] }}
+                        disponível(is))
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="nome_leitor">
+                Nome do leitor:
+            </label>
+
+            <input
+                type="text"
+                id="nome_leitor"
+                name="nome_leitor"
+                placeholder="Digite o nome do leitor"
+                value="{{ request.form.get('nome_leitor', '') }}"
+            >
+
+            <button type="submit">
+                Confirmar Empréstimo
+            </button>
+
+        </form>
+
+        <h2>Empréstimos ativos</h2>
+
+        {% if emprestimos %}
+
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Livro</th>
+                            <th>Leitor</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for emprestimo in emprestimos %}
+                        <tr>
+                            <td>{{ emprestimo["id"] }}</td>
+                            <td>{{ emprestimo["titulo"] }}</td>
+                            <td>{{ emprestimo["nome_leitor"] }}</td>
+                            <td>{{ emprestimo["data_emprestimo"] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        {% else %}
+
+            <p>Nenhum empréstimo ativo.</p>
+
+        {% endif %}
+
+        <p>
+            <a href="/">
+                ← Voltar ao início
+            </a>
+        </p>
+
+    </main>
+
+</body>
+</html>

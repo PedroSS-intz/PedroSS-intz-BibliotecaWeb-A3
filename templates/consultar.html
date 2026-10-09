@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Livros - BibliotecaWeb</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #253247;
+        }
+
+        header {
+            background-color: #17365d;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #00000015;
+        }
+
+        .busca {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #17365d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #28558a;
+        }
+
+        .tabela-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e8f0fa;
+        }
+
+        .disponivel {
+            color: green;
+            font-weight: bold;
+        }
+
+        .indisponivel {
+            color: #b42318;
+            font-weight: bold;
+        }
+
+        .voltar {
+            display: inline-block;
+            margin-top: 25px;
+            color: #17365d;
+        }
+
+        @media (max-width: 500px) {
+            .busca {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>📚 BibliotecaWeb</h1>
+        <p>Consulta de Livros</p>
+    </header>
+
+    <main>
+        <h2>Livros cadastrados</h2>
+
+        <form method="GET"
+              action="{{ url_for('pagina_consulta') }}">
+
+            <label for="q">Pesquisar por título ou autor:</label>
+
+            <div class="busca">
+                <input
+                    type="search"
+                    id="q"
+                    name="q"
+                    placeholder="Digite sua pesquisa..."
+                    value="{{ termo }}"
+                >
+
+                <button type="submit">
+                    Pesquisar
+                </button>
+            </div>
+        </form>
+
+        <p>
+            {{ livros|length }} livro(s) encontrado(s).
+        </p>
+
+        {% if livros %}
+
+        <div class="tabela-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Total</th>
+                        <th>Disponíveis</th>
+                        <th>Situação</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for livro in livros %}
+                    <tr>
+                        <td>{{ livro["id"] }}</td>
+                        <td>{{ livro["titulo"] }}</td>
+                        <td>{{ livro["autor"] }}</td>
+                        <td>{{ livro["quantidade_total"] }}</td>
+                        <td>{{ livro["quantidade_disponivel"] }}</td>
+
+                        <td>
+                            {% if livro["quantidade_disponivel"] > 0 %}
+                                <span class="disponivel">
+                                    Disponível
+                                </span>
+                            {% else %}
+                                <span class="indisponivel">
+                                    Indisponível
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+
+            <p>Nenhum livro encontrado.</p>
+
+        {% endif %}
+
+        <a class="voltar" href="/">
+            ← Voltar ao início
+        </a>
+    </main>
+</body>
+</html>

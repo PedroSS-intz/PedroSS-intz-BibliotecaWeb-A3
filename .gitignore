@@ -1,0 +1,18 @@
+# Ambiente virtual
+.venv/
+
+# Arquivos temporarios do Python
+__pycache__/
+*.pyc
+
+# Cache do pytest
+.pytest_cache/
+
+# Bancos de dados
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Configuracoes locais
+.env
